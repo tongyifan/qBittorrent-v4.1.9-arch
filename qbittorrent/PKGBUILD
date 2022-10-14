@@ -1,0 +1,65 @@
+# Maintainer: Eli Schwartz <eschwartz@archlinux.org>
+# Contributor: Antonio Rojas <arojas@archlinux.org>
+# Contributor: Timothy Redaelli <timothy.redaelli@gmail.com>
+# Contributor: carstene1ns <arch carsten-teibes de> - http://git.io/ctPKG
+# Contributor: Jkkyll Wu <adaptee at gmail [dot] com>
+# Contributor: Thomas Dziedzic < gostrc at gmail >
+# Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
+# Contributor: Geoffroy Carrier <geoffroy.carrier@koon.fr>
+
+pkgbase=qbittorrent
+pkgname=(qbittorrent qbittorrent-nox)
+pkgver=4.1.9
+pkgrel=1
+arch=('x86_64')
+url="https://www.qbittorrent.org"
+license=('custom' 'GPL')
+depends=('libtorrent-rasterbar-1_1-git' 'qt5-base')
+makedepends=('boost' 'qt5-tools' 'qt5-svg')
+source=("https://downloads.sourceforge.net/sourceforge/qbittorrent/${pkgname}-${pkgver}.tar.xz"{,.asc} 'qbittorrent.patch')
+sha256sums=('3ad08ab441f85b60715d8ed5369cf21f5c94c7ef07474abc247d09ce93a78ee7'
+            'SKIP' 'SKIP')
+b2sums=('2ac073c29ec5bd57259a6b7232e7937651f6bf02ddd3cd0b7c1d0bb8271447580f9d15c602fd3d6d4e0bcb65b436ce6727eb93c9803e3bfd4c5888d2fc1579bc'
+        'SKIP' 'SKIP')
+validpgpkeys=('D8F3DA77AAC6741053599C136E4A2D025B7CC9A2') # sledgehammer999 <sledgehammer999@qbittorrent.org>
+
+build() {
+  cd ${pkgbase}-${pkgver}
+
+  patch --forward --strip=1 --input="${srcdir}/qbittorrent.patch"
+
+  # tell qmake not to break makepkg's debug/!strip options
+  export QBT_ADD_CONFIG='nostrip'
+
+  mkdir -p ${pkgbase}
+  pushd ${pkgbase}
+  ../configure --prefix=/usr
+  make
+  popd
+
+  # Build nox variant
+  mkdir -p "${pkgbase}-nox"
+  pushd "${pkgbase}-nox"
+  ../configure --prefix=/usr --disable-gui --enable-systemd
+  make
+}
+
+package_qbittorrent() {
+  pkgdesc="An advanced BitTorrent client programmed in C++, based on Qt toolkit and libtorrent-rasterbar."
+  depends+=('qt5-svg' 'hicolor-icon-theme')
+  optdepends=('python: needed for torrent search tab')
+
+  cd ${pkgbase}-${pkgver}/${pkgbase}
+
+  make INSTALL_ROOT="${pkgdir}" install
+  install -Dm644 "${srcdir}"/${pkgbase}-${pkgver}/COPYING "${pkgdir}"/usr/share/licenses/${pkgname}/COPYING
+}
+
+package_qbittorrent-nox() {
+  pkgdesc="An advanced BitTorrent client programmed in C++, based on Qt toolkit and libtorrent-rasterbar, w/o gui"
+
+  cd ${pkgbase}-${pkgver}/${pkgbase}-nox
+
+  make INSTALL_ROOT="${pkgdir}" install
+  install -Dm644 "${srcdir}"/${pkgbase}-${pkgver}/COPYING "${pkgdir}"/usr/share/licenses/${pkgname}/COPYING
+}

@@ -1,0 +1,33 @@
+diff --unified --recursive --text libtorrent/bindings/python/src/create_torrent.cpp libtorrent.new/bindings/python/src/create_torrent.cpp
+--- libtorrent/bindings/python/src/create_torrent.cpp	2022-10-14 21:41:36.288060097 +0800
++++ libtorrent.new/bindings/python/src/create_torrent.cpp	2022-10-14 21:43:23.280346267 +0800
+@@ -7,6 +7,7 @@
+ #include <libtorrent/file_storage.hpp>
+ #include "libtorrent/torrent_info.hpp"
+ #include <libtorrent/version.hpp>
++#include <boost/bind.hpp>
+ #include "bytes.hpp"
+ 
+ using namespace boost::python;
+diff --unified --recursive --text libtorrent/bindings/python/src/session.cpp libtorrent.new/bindings/python/src/session.cpp
+--- libtorrent/bindings/python/src/session.cpp	2022-10-14 21:41:36.291393294 +0800
++++ libtorrent.new/bindings/python/src/session.cpp	2022-10-14 21:46:19.096475235 +0800
+@@ -34,6 +34,7 @@
+ #include "libtorrent/aux_/disable_warnings_push.hpp"
+ 
+ #include "boost_python.hpp"
++#include <boost/bind.hpp>
+ 
+ #include "libtorrent/aux_/disable_warnings_pop.hpp"
+ 
+diff --unified --recursive --text libtorrent/include/libtorrent/rss.hpp libtorrent.new/include/libtorrent/rss.hpp
+--- libtorrent/include/libtorrent/rss.hpp	2022-10-14 21:41:36.354724035 +0800
++++ libtorrent.new/include/libtorrent/rss.hpp	2022-10-14 21:42:12.823231299 +0800
+@@ -38,6 +38,7 @@
+ 
+ #include <boost/enable_shared_from_this.hpp>
+ #include <string>
++#include <map>
+ 
+ #ifndef TORRENT_NO_DEPRECATE
+ namespace libtorrent

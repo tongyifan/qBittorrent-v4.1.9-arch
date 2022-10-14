@@ -1,0 +1,10 @@
+diff --unified --recursive --text qbittorrent-4.1.9/src/gui/properties/piecesbar.cpp qbittorrent-4.1.9.new/src/gui/properties/piecesbar.cpp
+--- qbittorrent-4.1.9/src/gui/properties/piecesbar.cpp  2019-10-27 23:35:46.000000000 +0800
++++ qbittorrent-4.1.9.new/src/gui/properties/piecesbar.cpp      2022-10-14 22:29:13.238650711 +0800
+@@ -33,6 +33,7 @@
+ #include <QDebug>
+ #include <QHelpEvent>
+ #include <QPainter>
++#include <QPainterPath>
+ #include <QTextStream>
+ #include <QToolTip>
